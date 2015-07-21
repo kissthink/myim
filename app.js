@@ -24,4 +24,6 @@ app.post('/', function(req, res){
 	res.send('POST request to the homepage');
 });
 
-app.listen(3000);
+app.listen(app.get('port'), function(){
+	console.log('Express started on http://localhost:' + app.get('port') + ';press Ctrl-C to terminate');
+});
