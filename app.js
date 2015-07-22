@@ -2,7 +2,8 @@
  *	Modele dependencies
  */
 
-var express = require("express");
+var express = require('express');
+var routers = require('./routes');
 
 var app = express();
 
@@ -10,20 +11,14 @@ app.locals.title = 'myIM';
 app.locals.email = 'sfme@qq.com';
 
 app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
 
-app.all('/secret', function(req, res, next){
-	console.log('Accessing the secret section...');
-	next();
-});
+app.get('/', routers.index);
 
-app.get('/', function(req, res){
-	res.send('GET request to the homepage');
-});
-
-app.post('/', function(req, res){
-	res.send('POST request to the homepage');
-});
 
 app.listen(app.get('port'), function(){
-	console.log('Express started on http://localhost:' + app.get('port') + ';press Ctrl-C to terminate');
+	console.log('Express started on http://localhost:' 
+		+ app.get('port') + ';press Ctrl-C to terminate');
 });
