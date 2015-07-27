@@ -1,4 +1,7 @@
 var mqtt = require('mqtt');
+var path = require('path');
+var EventEmitter = require('events').EventEmitter;
+var event = new EventEmitter();
 
 var clientId = 'node_admin'; 
 var usr = 'admin';
@@ -20,11 +23,17 @@ var contactsQos = 2;
 var room = 'myim/chat/room/+'; //客户端聊天室相关的topic
 var roomQos = 2;
 
+event.on('checkin', checkInCb);
+
+event.on('contacts', contactsCb);
+
+event.on('room', roomCb);
+
 /* 
  * 启动时设置
  */
 client.on('connect', function(packet) {
-	client.subscribe(checkIn, {qos: checkInQos});
+	client.subscribe(checkIn, {qos: chechInQos});
 	client.subscribe(contacts, contactsQos);
 	client.subscribe(room, roomQos);
 });
@@ -60,8 +69,24 @@ client.on('error', function(err){
  * 核心事件，处理所有的topic消息，针对不同的消息类型分别处理
  */
 client.on('message', function(topic, message, packet) {
-	//console.log(topic);//客户端的topic
-	console.log(message.toString());
-	//console.log(packet);
+	var array = topic.split(path.sep);
+	if(4 < array.length) return;
+
+	var root = array[0];
+	var srv = array[1];
+	var func = array[2];
+	var usr = array[3];
+
+	event.emit(func, usr, message, packet);
 });
 
+function checkInCb(usr, msg, packet){
+	console.log(usr);
+	console.log(msg.toString());
+};
+
+function contactsCb(usr, msg, packet){
+};
+
+function roomCb(usr, msg, packet){
+};
