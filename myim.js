@@ -1,9 +1,19 @@
+/*
+ * myim.js
+ * create by gc87
+ */ 
+
 var mqtt = require('mqtt');
 var path = require('path');
 var assert = require('assert');
 var EventEmitter = require('events').EventEmitter;
 var event = new EventEmitter();
 var mongoose = require('mongoose');
+var Store = require('./store.js');
+
+var mongoUrl = 'mongodb://localhost:27017/myim';
+mongoose.connect(mongoUrl);
+var store = new Store(mongoose);
 
 var clientId = 'node_admin'; 
 var usr = 'admin';
@@ -16,16 +26,11 @@ var options = {
 	clientId: clientId
 };
 
-var client = mqtt.connect(options);
-var mongoUrl = 'mongodb://localhost:27017/myim'
-mongoose.connect(mongoUrl);
 
 var checkIn = 'myim/chat/checkin/+'; //客户端签到topic
 var chechInQos = 0;
-
 var contacts = 'myim/chat/contacts/+'; //通讯录相关topic
 var contactsQos = 2;
-
 var room = 'myim/chat/room/+'; //客户端聊天室相关的topic
 var roomQos = 2;
 
@@ -33,10 +38,21 @@ event.on('checkin', checkInCb);
 event.on('contacts', contactsCb);
 event.on('room', roomCb);
 
+var client = mqtt.connect(options); //连接mqtt服务器
+
+/*
+ * 数据库连接状态*/
+mongoose.connection.on('connected', function(){
+	console.log('mongoose connected to ' + mongoUrl);
+});
+
 /* 
  * 启动时设置
  */
 client.on('connect', function(packet) {
+	console.log('myim connected to ' + options.host + ':' + options.port);
+
+	var sysTopics = new store.getSysTopicsModel();
 	client.subscribe(checkIn, {qos: chechInQos});
 	client.subscribe(contacts, contactsQos);
 	client.subscribe(room, roomQos);
