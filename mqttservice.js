@@ -1,7 +1,9 @@
 var mqtt = require('mqtt');
 var path = require('path');
+var assert = require('assert');
 var EventEmitter = require('events').EventEmitter;
 var event = new EventEmitter();
+var MongoClient = require('mongodb').MongoClient;
 
 var clientId = 'node_admin'; 
 var usr = 'admin';
@@ -12,7 +14,16 @@ var options = {
 	keepalive: 10000,
 	clientId: 'mqttjs_admin'
 };
+
 var client = mqtt.connect(options);
+var mdb;
+var mongoUrl = 'mongodb://localhost:27017/myim'
+MongoClient.connect(mongoUrl, function(err, db){
+	assert.equal(null, err);
+	console.log('connected correctly to mongodb server.');
+	mdb = db;
+});
+
 
 var checkIn = 'myim/chat/checkin/+'; //客户端签到topic
 var chechInQos = 0;
