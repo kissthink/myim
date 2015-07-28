@@ -3,27 +3,22 @@ var path = require('path');
 var assert = require('assert');
 var EventEmitter = require('events').EventEmitter;
 var event = new EventEmitter();
-var MongoClient = require('mongodb').MongoClient;
+var mongoose = require('mongoose');
 
 var clientId = 'node_admin'; 
 var usr = 'admin';
 var pwd = '000000'
+
 var options = {
 	host: 'localhost',
 	port: '1883',
 	keepalive: 10000,
-	clientId: 'mqttjs_admin'
+	clientId: clientId
 };
 
 var client = mqtt.connect(options);
-var mdb;
 var mongoUrl = 'mongodb://localhost:27017/myim'
-MongoClient.connect(mongoUrl, function(err, db){
-	assert.equal(null, err);
-	console.log('connected correctly to mongodb server.');
-	mdb = db;
-});
-
+mongoose.connect(mongoUrl);
 
 var checkIn = 'myim/chat/checkin/+'; //客户端签到topic
 var chechInQos = 0;
@@ -35,9 +30,7 @@ var room = 'myim/chat/room/+'; //客户端聊天室相关的topic
 var roomQos = 2;
 
 event.on('checkin', checkInCb);
-
 event.on('contacts', contactsCb);
-
 event.on('room', roomCb);
 
 /* 
