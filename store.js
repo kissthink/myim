@@ -63,14 +63,17 @@ function Store(mongoose){
 	user.enable = true;
 	user.save();
 
+	//返回系统用户的Model
 	this.getSysUserModel = function(){
 		return SysUser;
 	};
 
+	//返回系统Topic的Model
 	this.getSysTopicModel = function(){
 		return SysTopic;
 	};
 
+	//返回客户端签到的Model
 	this.getCheckInModel = function(){
 		return CheckIn;
 	};
