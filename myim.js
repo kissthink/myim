@@ -23,7 +23,6 @@ mongoose.connection.on('connected', function(){
 	console.log('mongoose connected to ' + config.mongodb.url);
 });
 
-
 //连接到MQTT服务器设置
 client.on('connect', function(packet) {
 	console.log('myim connected to ' + config.mqtt.host + ':' + config.mqtt.port);
@@ -73,11 +72,6 @@ client.on('error', function(err){
 client.on('message', function(topic, message, packet) {
 	var array = topic.split(path.sep);
 	if(4 < array.length) return;
-
-	var root = array[0];
-	var srv = array[1];
-	var func = array[2];
-	var usr = array[3];
-
-	event.emit(func, usr, message, packet); //触发事件处理函数
+	//array[2]-function;array[3]-user
+	event.emit(array[2], array[3], message, packet); //触发事件处理函数
 });
