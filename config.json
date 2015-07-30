@@ -1,0 +1,16 @@
+{
+	"mqtt": {
+		"host": "localhost",
+		"port": "1883",
+		"keepalive": 10,
+		"clientId": "node_system",
+		"protocolId": "MQTT",
+		"protocolVersion": 4,
+		"clean": true,
+		"reconnectPeriod": 1000,
+		"connectTimeout": 30000
+	},
+	"mongodb": {
+		"url": "mongodb://localhost:27017/myim"
+	}
+}
