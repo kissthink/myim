@@ -9,8 +9,8 @@ var path = require('path');
 var EventEmitter = require('events').EventEmitter;
 var event = new EventEmitter();
 var mongoose = require('mongoose');
-var Store = require('./store.js');
-var route = require('./route.js');
+var Store = require('./store');
+var route = require('./routes');
 
 mongoose.connect(config.mongodb.url);
 var store = new Store(mongoose);
@@ -25,20 +25,17 @@ mongoose.connection.on('connected', function(){
 client.on('connect', function(packet) {
 	console.log('myim connected to ' + config.mqtt.host + ':' + config.mqtt.port);
 
-	var checkin = config.topics.checkin;
-	var contact = config.topics.contact;
-	var room = config.topics.room;
+	//遍历config中的topics部分，进行订阅和事件注册操作
+	var topics = config.topics;
+	topics.forEach(function(topic){
+		//订阅config中定义的topic
+		client.subscribe(topic.topic, {qos: topic.qos}, function(err, granted){
+			if(!err) console.log(topic.topic + ' subscribe sucessed.');
+		});
 
-	client.subscribe(checkin.topic, {qos: checkin.qos}, function(err, granted){
-		//if(err) console.log(err);
-		//if(!err) console.log('subscribe on ' + checkin.topic + ' successed.');
+		//注册指定的topic name对应的处理时间函数
+		event.on(topic.name, route[topic.name]);
 	});
-	client.subscribe(contact.topic, {qos: contact.qos});
-	client.subscribe(room.topic, {qos: room.qos});
-
-	event.on(checkin.name, route.checkin);
-	event.on(contact.name, route.contact);
-	event.on(room.name, route.room);
 });
 
 //重连时设置
