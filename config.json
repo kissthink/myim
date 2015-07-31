@@ -1,40 +1,40 @@
 {
-	"mqtt": {
-		"host": "localhost",
-		"port": "1883",
-		"keepalive": 10,
-		"clientId": "node_system",
-		"protocolId": "MQTT",
-		"protocolVersion": 4,
-		"clean": true,
-		"reconnectPeriod": 1000,
-		"connectTimeout": 30000
-	},
-	"topics" : {
-		"checkin": {
-			"name": "checkin",
-			"topic": "myim/chat/checkin/+",
-			"qos": 0,
-			"explain": ""
-		},
-		"contact": {
-			"name": "contact",
-			"topic": "myim/chat/contact/+",
-			"qos": 2,
-			"explain": ""
-		},
-		"room": {
-			"name": "room",
-			"topic": "myim/chat/room/+",
-			"qos": 2,
-			"explain": ""
-		}
-	},
-	"sysuser": {
-		"usr": "node_system",
-		"pwd": "000000"
-	},
-	"mongodb": {
-		"url": "mongodb://localhost:27017/myim"
-	}
+    "mqtt": {
+        "host": "localhost",
+        "port": "1883",
+        "keepalive": 10,
+        "clientId": "node_system",
+        "protocolId": "MQTT",
+        "protocolVersion": 4,
+        "clean": true,
+        "reconnectPeriod": 1000,
+        "connectTimeout": 30000
+    },
+    "topics": [
+        {
+            "name": "checkin",
+            "topic": "myim/chat/checkin/+",
+            "qos": 0,
+            "explain": ""
+        },
+        {
+            "name": "contact",
+            "topic": "myim/chat/contact/+",
+            "qos": 2,
+            "explain": ""
+        },
+        {
+            "name": "room",
+            "topic": "myim/chat/room/+",
+            "qos": 2,
+            "explain": ""
+        }
+    ],
+    "sysuser": {
+        "usr": "node_system",
+        "pwd": "000000"
+    },
+    "mongodb": {
+        "url": "mongodb://localhost:27017/myim"
+    }
 }
