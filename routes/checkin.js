@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+'use strict';
 /*
  * checkin.js
  * create by gc87

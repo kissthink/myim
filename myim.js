@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+'use strict';
 /*
  * myim.js
  * create by gc87

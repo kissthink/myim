@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+'use strict';
 /*
  * store.js
  * create by gc87
