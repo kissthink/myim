@@ -2,19 +2,17 @@
  * route.js
  */
 
-function Route(){
-};
 
 //客户签到（checkin）的主要处理函数
-Route.prototype.checkin = function(usr, msg, packet) {
+exports.checkin = function(packet, mongoose) {
+	console.log(packet.payload.toString());
 };
 
 //客户通讯录(contacts)的主要处理函数
-Route.prototype.contact = function(usr, msg, packet) {
+exports.contact = function(packet, mongoose) {
 };
 
 //客户创建的聊天室（room）的主要处理函数
-Route.prototype.room = function(usr, msg, packet) {
+exports.room = function(packet, mongoose) {
 };
 
-module.exports = Route;

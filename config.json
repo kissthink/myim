@@ -10,6 +10,30 @@
 		"reconnectPeriod": 1000,
 		"connectTimeout": 30000
 	},
+	"topics" : {
+		"checkin": {
+			"name": "checkin",
+			"topic": "myim/chat/checkin/+",
+			"qos": 0,
+			"explain": ""
+		},
+		"contact": {
+			"name": "contact",
+			"topic": "myim/chat/contact/+",
+			"qos": 2,
+			"explain": ""
+		},
+		"room": {
+			"name": "room",
+			"topic": "myim/chat/room/+",
+			"qos": 2,
+			"explain": ""
+		}
+	},
+	"sysuser": {
+		"usr": "node_system",
+		"pwd": "000000"
+	},
 	"mongodb": {
 		"url": "mongodb://localhost:27017/myim"
 	}

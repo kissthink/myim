@@ -3,19 +3,17 @@
  * create by gc87
  */ 
 
+var config = require('./config');
 var mqtt = require('mqtt');
 var path = require('path');
-var assert = require('assert');
 var EventEmitter = require('events').EventEmitter;
 var event = new EventEmitter();
-var config = require('./config');
 var mongoose = require('mongoose');
 var Store = require('./store.js');
-var Route = require('./route.js');
+var route = require('./route.js');
 
 mongoose.connect(config.mongodb.url);
 var store = new Store(mongoose);
-var route = new Route();
 var client = mqtt.connect(config.mqtt); //连接mqtt服务器
 
 //数据库连接状态
@@ -27,20 +25,20 @@ mongoose.connection.on('connected', function(){
 client.on('connect', function(packet) {
 	console.log('myim connected to ' + config.mqtt.host + ':' + config.mqtt.port);
 
-	//从数据库中获取topic并注册topic
-	var sysTopic = new store.getSysTopicModel();
-	sysTopic.find(function(err, topics){
-		topics.forEach(function(topic){
-			client.subscribe(topic.topic, {qos: topic.qos}, function(err, granted){
-				if(err){
-					console.log('subscribe ' + topic.name + ' faid.');
-				}
-			});
+	var checkin = config.topics.checkin;
+	var contact = config.topics.contact;
+	var room = config.topics.room;
 
-			//注册myim自定义的事件处理函数
-			event.on(topic.name, route[topic.name]);
-		});
+	client.subscribe(checkin.topic, {qos: checkin.qos}, function(err, granted){
+		//if(err) console.log(err);
+		//if(!err) console.log('subscribe on ' + checkin.topic + ' successed.');
 	});
+	client.subscribe(contact.topic, {qos: contact.qos});
+	client.subscribe(room.topic, {qos: room.qos});
+
+	event.on(checkin.name, route.checkin);
+	event.on(contact.name, route.contact);
+	event.on(room.name, route.room);
 });
 
 //重连时设置
@@ -49,12 +47,6 @@ client.on('reconnect', function(){
 
 //关闭时清理
 client.on('close', function(){
-	var sysTopic = new store.getSysTopicModel();
-	sysTopic.find(function(err, topics){
-		topics.forEach(function(topic){
-			client.unsubscribe(topic.topic);
-		});
-	});
 });
 
 //离线时处理 
@@ -72,6 +64,6 @@ client.on('error', function(err){
 client.on('message', function(topic, message, packet) {
 	var array = topic.split(path.sep);
 	if(4 < array.length) return;
-	//array[2]-function;array[3]-user
-	event.emit(array[2], array[3], message, packet); //触发事件处理函数
+	//array[2]-触发的事件名称;
+	event.emit(array[2], packet, mongoose); //触发事件处理函数
 });
