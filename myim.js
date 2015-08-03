@@ -18,6 +18,12 @@ mongoose.connect(config.mongodb.url);
 var store = new Store(mongoose);
 var client = mqtt.connect(config.mqtt); //连接mqtt服务器
 
+var context = {
+	client: client,
+	config: config,
+	store: store
+};
+
 //数据库连接状态
 mongoose.connection.on('connected', function(){
 	console.log('mongoose connected to ' + config.mongodb.url);
@@ -64,5 +70,5 @@ client.on('message', function(topic, message, packet) {
 	var array = topic.split(path.sep);
 	if(4 < array.length) return;
 	//array[2]-触发的事件名称;
-	event.emit(array[2], packet, mongoose); //触发事件处理函数
+	event.emit(array[2], packet, context); //触发事件处理函数
 });

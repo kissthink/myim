@@ -5,8 +5,10 @@
  * create by gc87
  */
 
-exports.main = function(packet, mongoose) {
-	console.log(packet.payload.toString());
+exports.main = function(packet, context) {
+	console.log(packet);
 	var obj = JSON.parse(packet.payload);
-	console.log(obj.cmd);
+	if(context.config.mqtt.clientId == obj.clientId) return;
+	obj.clientId = context.config.mqtt.clientId;
+	context.client.publish(obj, packet.payload);
 };
