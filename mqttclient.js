@@ -32,8 +32,24 @@ function onConnect(flag){
 	//client.unsubscribe(chatTopic);
 };
 
+function userTest(){
+	var myTopic = 'myim/chat/user/' + usr;
+	var obj = {};
+	obj.cmd = 'signup';
+	obj.usr = '';
+
+	client.subscribe(myTopic, {qos: 2});
+	client.publish(myTopic, JSON.stringify(obj), {qos: 2}, function(err, granted){
+		if(err){
+			console.log(err.toString());
+			return;
+		}
+	});
+};
+
 client.on('connect', function() {
-	onConnect('connect');
+	//onConnect('connect');
+	userTest();
 });
 
 client.on('reconnect', function(){
@@ -58,5 +74,6 @@ client.on('message', function(topic, message, packet) {
 		console.log(packet);
 	}
 	*/
-	console.log(packet);
+	console.log(topic);
+	console.log(message.toString());
 });
