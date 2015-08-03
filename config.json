@@ -11,6 +11,12 @@
         "connectTimeout": 30000
     },
     "topics": [
+		{
+			"name": "user",
+            "topic": "myim/chat/user/+",
+            "qos": 2,
+            "explain": "客户信息注册、修改等的topic."
+		},
         {
             "name": "checkin",
             "topic": "myim/chat/checkin/+",
