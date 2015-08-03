@@ -52,8 +52,11 @@ client.on('error', function(err){
 
 client.on('message', function(topic, message, packet) {
 	//需要过滤掉本客户端的topic
+	/*
 	if(!chatTopic === topic){
 		console.log(message.toString());
 		console.log(packet);
 	}
+	*/
+	console.log(packet);
 });
