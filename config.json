@@ -3,7 +3,7 @@
         "host": "localhost",
         "port": "1883",
         "keepalive": 10,
-        "clientId": "node_system",
+        "clientId": "system",
         "protocolId": "MQTT",
         "protocolVersion": 4,
         "clean": true,
@@ -37,7 +37,7 @@
         }
     ],
     "sysuser": {
-        "usr": "node_system",
+        "usr": "system",
         "pwd": "000000"
     },
     "mongodb": {

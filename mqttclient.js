@@ -36,7 +36,8 @@ function userTest(){
 	var myTopic = 'myim/chat/user/' + usr;
 	var obj = {};
 	obj.cmd = 'signup';
-	obj.usr = '';
+	obj.usr = 'gc01';
+	obj.pwd = '000000'
 
 	client.subscribe(myTopic, {qos: 2});
 	client.publish(myTopic, JSON.stringify(obj), {qos: 2}, function(err, granted){

@@ -26,17 +26,43 @@ exports.main = function(packet, context) {
 };
 
 function signUp(topic, obj, context){
-	var returnObj = {};
-	returnObj.cmd = 're_signup';
-	returnObj.clientId = context.config.mqtt.clientId;
+	var reObj = {};
+	reObj.cmd = 're_signup';
+	reObj.clientid = context.config.mqtt.clientId;
 	if('' === obj.usr){
-		returnObj.code = 2001;
+		reObj.code = 2001;
+		context.client.publish(topic, JSON.stringify(reObj));
+		return;
 	}
-	context.client.publish(topic, JSON.stringify(returnObj));
+	if(context.config.sysuser.usr == obj.usr){
+		reObj.code = 2002;
+		context.client.publish(topic, JSON.stringify(reObj));
+		return;
+	}
+
+	var User = context.store.getUserModel();
+	User.find({'usr': obj.usr}, 'usr pwd', function(err, usr){
+		if(err) { //查询错误
+			reObj.code = 2005;
+			console.log(err);
+		}
+		if(0 == usr.length){ //不存在,则创建
+			var user = new User();
+			user.usr = obj.usr;
+			user.pwd = obj.pwd;
+			user.save();
+			reObj.code = 2000;
+		}
+		if(0 < usr.length){ //已存在
+			reObj.code = 2002;
+		}
+		context.client.publish(topic, JSON.stringify(reObj));
+	});
 };
 
 function logIn(topic, obj, context){
 };
 
 function logOut(topic, obj, context){
+
 };

@@ -17,11 +17,21 @@ function Store(mongoose){
 		date		: {type: Date, default: Date.now}
 	}, {collection: 'checkin'});
 
+	var UserSchema = new Schema({
+		usr: {type: String, unique: true},
+		pwd: {type: String}
+	}, {collection: 'user'});
+
 	var CheckIn = mongoose.model('CheckIn', CheckInSchema);
+	var User = mongoose.model('User', UserSchema);
 
 	//返回客户端签到的Model
 	this.getCheckInModel = function(){
 		return CheckIn;
+	};
+
+	this.getUserModel = function(){
+		return User;
 	};
 };
 
