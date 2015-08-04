@@ -61,8 +61,9 @@ function signUp(topic, obj, context){
 };
 
 function logIn(topic, obj, context){
+	//TODO:
 };
 
 function logOut(topic, obj, context){
-
+	//TODO:
 };
