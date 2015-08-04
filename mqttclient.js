@@ -11,7 +11,8 @@ var options = {
 	clientId: clientId
 };
 
-var client = mqtt.connect(options);
+//var client = mqtt.connect('ws://test.mosquitto.org:8080');
+var client = mqtt.connect('mqtt://localhost:1883');
 var chatTopic = 'myim/chat/checkin/' + usr;
 
 function onConnect(flag){

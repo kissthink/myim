@@ -1,7 +1,6 @@
 {
+	"url": "mqtt://localhost:1883",
     "mqtt": {
-        "host": "localhost",
-        "port": "1883",
         "keepalive": 10,
         "clientId": "system",
         "protocolId": "MQTT",

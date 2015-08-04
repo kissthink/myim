@@ -16,7 +16,8 @@ var route = require('./routes');
 
 mongoose.connect(config.mongodb.url);
 var store = new Store(mongoose);
-var client = mqtt.connect(config.mqtt); //连接mqtt服务器
+//var client = mqtt.connect('ws://test.mosquitto.org:8080'); //连接mqtt服务器
+var client = mqtt.connect(config.url, config.mqtt); //连接mqtt服务器
 
 var context = {
 	client: client,
@@ -31,7 +32,7 @@ mongoose.connection.on('connected', function(){
 
 //连接到MQTT服务器设置
 client.on('connect', function(packet) {
-	console.log('myim connected to ' + config.mqtt.host + ':' + config.mqtt.port);
+	console.log('myim connected to ' + config.url);
 
 	//遍历config中的topics部分，进行订阅和事件注册操作
 	var topics = config.topics;
