@@ -25,6 +25,9 @@ exports.main = function(packet, context) {
 	}
 };
 
+/*
+ * 用户注册im系统
+ */
 function signUp(topic, obj, context){
 	var reObj = {};
 	reObj.cmd = 're_signup';
@@ -60,10 +63,16 @@ function signUp(topic, obj, context){
 	});
 };
 
+/*
+ * 用户登录im系统
+ */
 function logIn(topic, obj, context){
 	//TODO:
 };
 
+/*
+ * 用户登出im系统
+ */
 function logOut(topic, obj, context){
 	//TODO:
 };
