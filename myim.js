@@ -101,7 +101,7 @@ client.on('error', function(err){
 
 //核心事件，处理所有的topic消息，针对不同的消息类型分别处理
 client.on('message', function(topic, message, packet) {
-	var array = topic.split(path.sep);
+	var array = topic.split('/');
 	if(4 < array.length) return;
 	//array[2]-触发的事件名称;
 	event.emit(array[2], packet, context); //触发事件处理函数
