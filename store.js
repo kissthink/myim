@@ -21,9 +21,17 @@ function Store(mongoose){
 		usr: {type: String, unique: true},
 		pwd: {type: String}
 	}, {collection: 'user'});
+	
+	var MessageSchema = new Schema({
+		msgId: {type: String, unique: true},
+		topic: {type: String},
+		content: {type: String},
+		msgType: {type: String}
+	}, {collection: 'message'});
 
 	var CheckIn = mongoose.model('CheckIn', CheckInSchema);
 	var User = mongoose.model('User', UserSchema);
+	var Message = mongoose.model('Message', MessageSchema);
 
 	//返回客户端签到的Model
 	this.getCheckInModel = function(){
@@ -32,6 +40,10 @@ function Store(mongoose){
 
 	this.getUserModel = function(){
 		return User;
+	};
+	
+	this.GetMessageModel = function(){
+		return Message;
 	};
 };
 
