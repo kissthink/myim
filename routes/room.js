@@ -5,5 +5,6 @@
  * create by gc87
  */
 
-exports.main = function(packet, mongoose){
+exports.main = function(packet, context){
+	var obj = JSON.parse(packet.payload);
 };

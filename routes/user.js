@@ -6,7 +6,7 @@
  */
 
 exports.main = function(packet, context) {
-    //console.log(packet);
+    console.log(packet);
     var topic = packet.topic;
     var obj = JSON.parse(packet.payload);
     //如果是自己的clientId就忽略
@@ -76,7 +76,14 @@ function logIn(topic, obj, context) {
         }
         if (0 < usr.length) { //已存在
             reObj.code = 2002;
-			reObj.room = 'yncoder';
+			reObj.room = 'room';
+			
+			roomObj = {};
+			roomObj.cmd = 'sys_msg';
+			roomObj.code = 3000;
+			roomObj.usr = context.sysuser.usr;
+			roomObj.msg = obj.usr + ' join this room.';
+			context.client.publish('myim/chat/room/+', roomObj);
         }
 		if(0 == usr.length){ //不存在
 			reObj.code = 2001;
