@@ -11,8 +11,8 @@ var options = {
 	clientId: clientId
 };
 
-//var client = mqtt.connect('ws://test.mosquitto.org:8080');
-var client = mqtt.connect('mqtt://localhost:1883');
+var client = mqtt.connect('ws://test.mosquitto.org:8080');
+//var client = mqtt.connect('mqtt://localhost:1883');
 var chatTopic = 'myim/chat/checkin/' + usr;
 
 function onConnect(flag){
@@ -34,14 +34,14 @@ function onConnect(flag){
 };
 
 function userTest(){
-	var myTopic = 'myim/chat/user/' + usr;
+	var signUpTopic = 'myim/chat/user/' + usr;
 	var obj = {};
 	obj.cmd = 'signup';
 	obj.usr = 'gc01';
 	obj.pwd = '000000'
 
-	client.subscribe(myTopic, {qos: 2});
-	client.publish(myTopic, JSON.stringify(obj), {qos: 2}, function(err, granted){
+	client.subscribe(signUpTopic, {qos: 2});
+	client.publish(signUpTopic, JSON.stringify(obj), {qos: 2}, function(err, granted){
 		if(err){
 			console.log(err.toString());
 			return;
@@ -76,6 +76,14 @@ client.on('message', function(topic, message, packet) {
 		console.log(packet);
 	}
 	*/
-	console.log(topic);
 	console.log(message.toString());
+	var obj = JSON.parse(message.toString());
+	if('re_signup' == obj.cmd){
+		var o = {};
+		o.cmd = 'login';
+		o.usr = 'gc01';
+		o.pwd = '000000';
+		var signUpTopic = 'myim/chat/user/' + usr;
+		client.publish(signUpTopic, JSON.stringify(o), {qos: 2});
+	}
 });
