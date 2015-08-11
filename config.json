@@ -1,5 +1,5 @@
 {
-    "url": "mqtt://localhost:1883",
+    "url": "ws://test.mosquitto.org:8080",
     "mqtt": {
         "keepalive": 10,
         "clientId": "system",
