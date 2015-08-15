@@ -68,6 +68,7 @@ function signUp(topic, obj, context) {
  */
 function logIn(topic, obj, context) {
 	var reObj = {};
+	reObj.cmd = 're_login';
     var User = context.store.getUserModel();
 	User.find( {'usr': obj.usr}, 'usr pwd', function(err, usr) {
         if (err) { //查询错误
@@ -75,13 +76,13 @@ function logIn(topic, obj, context) {
             console.log(err);
         }
         if (0 < usr.length) { //已存在
-            reObj.code = 2002;
+            reObj.code = 2000;
 			reObj.room = 'room';
 			
-			roomObj = {};
+			var roomObj = {};
 			roomObj.cmd = 'sys_msg';
 			roomObj.code = 3000;
-			roomObj.usr = context.sysuser.usr;
+			roomObj.usr = context.config.sysuser.usr;
 			roomObj.msg = obj.usr + ' join this room.';
 			context.client.publish('myim/chat/room/+', roomObj);
         }

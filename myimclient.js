@@ -1,4 +1,7 @@
+var userTopic = 'myim/chat/user/';
+var roomTopic = 'myim/chat/room/';
 var client;
+
 $(function() {
     client = new Paho.MQTT.Client('test.mosquitto.org', 8080, "clientId");
     client.onConnectionLost = onConnectionLost;
@@ -6,42 +9,36 @@ $(function() {
 	client.connect( {onSuccess:onConnect});
 });
 
-function logIn(){
-	var logInTopic = 'myim/chat/user/';
+function logIn(usr, pwd){
+	var logInTopic = userTopic;
 	var logInObj = {};
 	logInObj.cmd = 'login';
-	logInObj.usr = 'gc001';
-	logInObj.pwd = '000000';
+	logInObj.usr = usr;
+	logInObj.pwd = pwd;
 	
 	client.subscribe(logInTopic + logInObj.usr);
-	console.log(logInTopic + logInObj.usr);
 	var msg = new Paho.MQTT.Message(JSON.stringify(logInObj));
     msg.destinationName = logInTopic + logInObj.usr;
 	client.send(msg);
     //client.disconnect();
 };
 
+function signUp(usr, pwd) {
+	var signUpTopic = userTopic;
+	var obj = {};
+	obj.cmd = 'signup';
+	obj.usr = usr;
+	obj.pwd = pwd;
+	
+	client.subscribe(signUpTopic + obj.usr);
+	var msg = new Paho.MQTT.Message(JSON.stringify(obj));
+    msg.destinationName = signUpTopic + obj.usr;
+	client.send(msg);
+};
+
 function onConnect() {
-	logIn();
-    //console.log("onConnect");
-	/*
-    var obj = {};
-    obj.cmd = 'signup';
-    obj.usr = 'gc01';
-    obj.pwd = '000000';
-
-    var str = JSON.stringify(obj);
-    //console.log(str);
-
-    var topic = 'myim/chat/room/gc001';
-    client.subscribe(topic);
-    var message = new Paho.MQTT.Message(str);
-    message.destinationName = topic;
-    for (var i = 0; i < 100; i++) {
-        client.send(message);
-    }
-    client.disconnect();
-	*/
+	logIn('gc001', '000000');
+	//连接成功
 };
 
 // called when the client loses its connection
@@ -55,5 +52,17 @@ function onConnectionLost(responseObject) {
 function onMessageArrived(message) {
     //console.log("onMessageArrived:"+message.payloadString);
 	var arvObj = JSON.parse(message.payloadString);
-    console.log(arvObj);
+    console.log(message);
+	if('re_login' === arvObj.cmd && 2001 === arvObj.code){
+		signUp('gc001', '000000');
+	}
+	
+	if('re_login' === arvObj.cmd && 2000 === arvObj.code) {
+		client.subscribe(roomTopic + 'gc001');
+		console.log('user logined and subscribed topic: ' + roomTopic + 'gc001');
+	}
+	
+	if('re_signup' === arvObj.cmd && 2000 === arvObj.code){
+		logIn('gc001', '000000');
+	}
 };
