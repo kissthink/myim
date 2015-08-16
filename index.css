@@ -1,0 +1,43 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+#loginDiv {
+	text-align: center;
+	margin: 0px auto;
+}
+
+#loginDiv h3 {
+	font-size: 14px;
+}
+
+#nickname {
+	border-width: 0 0 1px;
+	border-color: black;
+	border-style: none none solid;
+	text-align: center;
+	font-weight: lighter;
+}
+
+#chatDiv {
+	width: 700px;
+	height: 500px;
+	margin: 10px auto 10px auto;
+	border: 1px solid gray;
+}
+
+#inputDiv {
+	width: 700px;
+	height: 40px;
+	margin: 10px auto;
+}
+
+#inputBtn {
+	float: right;
+	width: 80px;
+}
+
+#input {
+	width: 500px;
+}
