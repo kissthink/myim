@@ -3,6 +3,7 @@ var roomTopic = 'myim/chat/room/';
 var client;
 var usr = '';
 var clientStatus = '';
+var divH = 0;
 
 function getRandomNum(Min,Max) {   
 	var Range = Max - Min;   
@@ -149,5 +150,7 @@ function onMessageArrived(message) {
 	if('room' === arvObj.cmd) {
 		var chat = '<div class="chat">' + arvObj.usr + ' : ' + arvObj.msg + '</div>'
 		$('#chatDiv').append(chat);
+		$('#chatDiv').scrollTop(divH);
+		divH += 100;
 	}
 };
