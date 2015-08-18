@@ -5,10 +5,10 @@ var usr = '';
 var clientStatus = '';
 var divH = 0;
 
-function getRandomNum(Min,Max) {   
-	var Range = Max - Min;   
-	var Rand = Math.random();   
-	return(Min + Math.round(Rand * Range));   
+function getRandomNum(min, max) {   
+	var range = max - min;   
+	var rand = Math.random();   
+	return(min + Math.round(rand * range));   
 }   
 
 $(function() {
