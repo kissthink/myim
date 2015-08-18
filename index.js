@@ -4,9 +4,15 @@ var client;
 var usr = '';
 var clientStatus = '';
 
+function getRandomNum(Min,Max) {   
+	var Range = Max - Min;   
+	var Rand = Math.random();   
+	return(Min + Math.round(Rand * Range));   
+}   
+
 $(function() {
 	//mqtt client 连接
-    client = new Paho.MQTT.Client('test.mosquitto.org', 8080, "clientId");
+    client = new Paho.MQTT.Client('test.mosquitto.org', 8080, "clientId" + getRandomNum(1, 100000));
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
 	client.connect( {onSuccess:onConnect});
