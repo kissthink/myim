@@ -25,6 +25,7 @@
 	height: 500px;
 	margin: 10px auto 10px auto;
 	border: 1px solid gray;
+	overflow: auto;
 }
 
 #inputDiv {
@@ -40,4 +41,7 @@
 
 #input {
 	width: 500px;
+	border-width: 0 0 1px;
+	border-color: black;
+	border-style: none none solid;
 }

@@ -16,7 +16,6 @@ var route = require('./routes');
 
 mongoose.connect(config.mongodb.url);
 var store = new Store(mongoose);
-//var client = mqtt.connect('ws://test.mosquitto.org:8080'); //连接mqtt服务器
 var client = mqtt.connect(config.url, config.mqtt); //连接mqtt服务器
 
 var context = {
@@ -37,15 +36,16 @@ client.on('connect', function(packet) {
 	//遍历config中的topics部分，进行订阅和事件注册操作
 	var topics = config.topics;
 	topics.forEach(function(topic){
-		//订阅config中定义的topic
+		//先取消订阅,再订阅config中定义的topic
+		client.unsubscribe(topic.topic);
 		client.subscribe(topic.topic, {qos: topic.qos}, function(err, granted){
 			if(!err) console.log(topic.topic + ' subscribe sucessed.');
 		});
 
+		//先移除事件处理,再注册指定的topic name对应的处理时间函数
 		event.removeListener(topic.name, function(err){
 			if(err) return;
 		});
-		//注册指定的topic name对应的处理时间函数
 		event.on(topic.name, route[topic.name]);
 		console.log('event on ' + topic.name);
 	});
@@ -54,6 +54,21 @@ client.on('connect', function(packet) {
 //重连时设置
 client.on('reconnect', function(){
 	console.log('reconnect......');
+	var topics = config.topics;
+	topics.forEach(function(topic){
+		//先取消订阅,再订阅config中定义的topic
+		client.unsubscribe(topic.topic);
+		client.subscribe(topic.topic, {qos: topic.qos}, function(err, granted){
+			if(!err) console.log(topic.topic + ' subscribe sucessed.');
+		});
+
+		//先移除事件处理,再注册指定的topic name对应的处理时间函数
+		event.removeListener(topic.name, function(err){
+			if(err) return;
+		});
+		event.on(topic.name, route[topic.name]);
+		console.log('event on ' + topic.name);
+	});
 });
 
 //关闭时清理

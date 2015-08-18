@@ -6,5 +6,6 @@
  */
 
 exports.main = function(packet, context){
-	var obj = JSON.parse(packet.payload);
+	//var obj = JSON.parse(packet.payload);
+	console.log(packet.payload.toString());
 };

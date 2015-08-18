@@ -6,7 +6,6 @@
  */
 
 exports.main = function(packet, context) {
-    console.log(packet);
     var topic = packet.topic;
     var obj = JSON.parse(packet.payload);
     //如果是自己的clientId就忽略
@@ -90,6 +89,7 @@ function logIn(topic, obj, context) {
 			reObj.code = 2001;
 		}
         context.client.publish(topic, JSON.stringify(reObj));
+		console.log(JSON.stringify(reObj));
     });
 };
 
