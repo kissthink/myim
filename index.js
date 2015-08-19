@@ -57,6 +57,7 @@ $(function() {
 			obj.msg = txt;
 			var msg = new Paho.MQTT.Message(JSON.stringify(obj));
 			msg.destinationName = roomTopic + usr;
+			msg.qos = 2;
 			client.send(msg);
 			$('#input').val('');	
 		}
