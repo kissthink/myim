@@ -118,6 +118,15 @@ function signUp(usr, pwd) {
 	client.send(msg);
 };
 
+function xss(val) {
+    val = val.toString();
+    val = val.replace(/[<%3C]/g, "&lt;");
+    val = val.replace(/[>%3E]/g, "&gt;");
+    val = val.replace(/"/g, "&quot;");
+    val = val.replace(/'/g, "&#39;");
+    return val;
+};
+
 function onConnect() {
 	clientStatus = 'connected';
 	console.log('connect sucessed.');
@@ -148,7 +157,7 @@ function onMessageArrived(message) {
 	}
 	
 	if('room' === arvObj.cmd) {
-		var chat = '<div class="chat">' + arvObj.usr + ' : ' + arvObj.msg + '</div>'
+		var chat = '<div class="chat">' + xss(arvObj.usr) + ' : ' + xss(arvObj.msg) + '</div>'
 		$('#chatDiv').append(chat);
 		$('#chatDiv').scrollTop(divH);
 		divH += 100;
