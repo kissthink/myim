@@ -69,6 +69,8 @@ client.on('offline', function(){
 client.on('error', function(err){
 	if(err){
 		console.log(err);
+		client.end();
+		client = mqtt.connect(config.url, config.mqtt);
 	}
 });
 
